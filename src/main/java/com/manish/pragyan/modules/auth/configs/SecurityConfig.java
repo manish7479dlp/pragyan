@@ -25,6 +25,8 @@ import com.manish.pragyan.modules.auth.filters.JwtFilter;
 import com.manish.pragyan.modules.auth.handler.Oauth2FailureHandler;
 import com.manish.pragyan.modules.auth.handler.Oauth2SuccessHandler;
 
+import jakarta.servlet.DispatcherType;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -66,6 +68,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(cors -> cors.configurationSource(configurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                		.dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
                         .requestMatchers("/auth/**", "/oauth2/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
